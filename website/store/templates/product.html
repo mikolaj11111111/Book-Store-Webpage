@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{%block content%}
+
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<div class='container'>
+    <center>
+        <div class="card mb-3" style="max-width: 1540px;">
+            <div class="row g-0">
+            <div class="col-md-4">
+                <img src="{{product.image.url}}" class="img-fluid rounded-start" alt="...">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title">{{product.name}}</h5>
+                    <p class="card-text">{{product.price}}zł</p>
+                    <p class="card-text">{{product.description}}</p>
+                    <p class="card-text">{{product.category | upper}}</p>
+                    </br>ID: {{product.id}}
+                    <div class='row justify-content-center'>
+                        <div class ='col-md-2'>Quantity:</div>
+                        <div class ='col-md-2'>                    
+                            <select class="form-select" aria-label="Quantity" id='qty-cart'>
+                                <option selected>Open this select menu</option>
+                                {% for i in num_to_loop %}
+                                <option value="{{ i }}">{{ i }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>    
+                    <br></br>
+                    <button type="button" value="{{product.id}}" class="btn btn-secondary" id="add-cart">ADD TO CART</button>
+                </div>
+            </div>
+            </div>
+        </div>
+    </center>
+</div>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<script>
+    //Check if button is pressed
+    $(document).on('click', '#add-cart', function(e){
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: '{% url 'cart_add' %}',
+            data: {
+                product_id: $('#add-cart').val(),
+                product_qty: $('#qty-cart option:selected').text(),
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                action: 'post',
+            },
+            success: function(json){
+                //console.log(json)
+                document.getElementById('cart_quantity').textContent = json.qty
+            },
+            error: function(xhr, errmsg, err){
+
+            },
+        });
+    })
+</script>
+
+
+{% endblock %}

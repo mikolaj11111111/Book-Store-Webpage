@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Header -->
+<header class="bg-dark py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">Sell Item</h1>
+        </div>
+    </div>
+</header>
+<br>
+<div class="container">
+    <div class="row">
+        <center>
+            <div class="card" style="width: 60rem;">
+                <div class="card-header">
+                    Sell an Item
+                </div>
+
+                <ul class="list-group list-group-flush">
+                    <form method="POST" action="{% url 'sell' %}" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <li class="list-group-item">
+                            <input type="text" class="form-control" id="productName" name="name" placeholder="Product Name">
+                        </li>
+                        <li class="list-group-item">
+                            <div class="form-group">
+                                <label for="categorySelect">Select Category</label>
+                                <select class="form-control" id="categorySelect" name="category">
+                                    <option value="" disabled selected>Category</option>
+                                    {% for category in categories %}
+                                    <option value="{{ category.id }}">{{ category.name | upper}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="mb-3">
+                                <label for="priceInput" class="form-label">Price</label>
+                                <input class="form-control" type="number" id="priceInput" name="price" placeholder="0.00" min="0" step="0.01">
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="mb-3">
+                                <label for="formFile" class="form-label">Place the image</label>
+                                <input class="form-control" type="file" id="formFile" name="image">
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <textarea class="form-control" id="exampleFormControlTextarea1" name="description" placeholder="Description" rows="1"></textarea>
+                        </li>
+                        <button type="submit" class="btn btn-secondary">Sell</button>
+                    </form>
+                    
+                </ul>
+            </div>
+        </center>
+    </div>
+</div>
+<br>
+{% endblock %}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const categorySelect = document.getElementById('categorySelect');
+
+        // Handle category selection
+        categorySelect.addEventListener('change', function () {
+            const selectedCategory = categorySelect.value;
+            console.log('Selected category:', selectedCategory); // Możesz to zmienić na inną akcję
+        });
+    });
+
+    // Walidacja pola ceny
+    function validatePrice(input) {
+        const regex = /^\d+(\.\d{0,2})?$/;
+        if (!regex.test(input.value)) {
+            input.value = input.value.slice(0, -1);
+        }
+    }
+</script>

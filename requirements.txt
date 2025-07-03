@@ -1,0 +1,14 @@
+Pierwsze trzeba utwórzyc virtualne środowisko:
+python -m venv venv
+./venv/Scripts/activate
+
+Zainstalowac Pythona- my pracowalismy na wersji 3.12.6
+
+Zainstalowac tymi komendami podane rzeczy:
+pip install Django==5.1.4
+pip install Pillow==11.0.0
+
+
+Uruchomienie
+py manage.py runserver
+(Powinno działać)
